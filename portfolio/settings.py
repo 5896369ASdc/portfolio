@@ -2,8 +2,6 @@ from pathlib import Path
 import os
 from decouple import config
 import cloudinary
-import cloudinary.uploader
-import cloudinary.api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -98,7 +96,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ---------------- CLOUDINARY CONFIG (FIXED) ----------------
+# ---------------- CLOUDINARY (FIXED PROPER WAY) ----------------
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': config('CLOUDINARY_API_KEY'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 cloudinary.config(
     cloud_name=config('CLOUDINARY_CLOUD_NAME'),
@@ -107,10 +113,8 @@ cloudinary.config(
     secure=True
 )
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# IMPORTANT: remove dependency on local media in production
-MEDIA_URL = '/media/'   # (can stay, but not used anymore)
+# MEDIA (not used in production but safe to keep)
+MEDIA_URL = '/media/'
 
 # DEFAULT PK
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
