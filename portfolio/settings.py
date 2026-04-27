@@ -1,6 +1,9 @@
 from pathlib import Path
 import os
 from decouple import config
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,8 +27,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'cloudinary',
     'cloudinary_storage',
+
     'main',
 ]
 
@@ -41,10 +46,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# URLS
 ROOT_URLCONF = 'portfolio.urls'
 
-# TEMPLATES
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -60,7 +63,6 @@ TEMPLATES = [
     },
 ]
 
-# WSGI
 WSGI_APPLICATION = 'portfolio.wsgi.application'
 
 # DATABASE
@@ -96,16 +98,19 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# MEDIA - Cloudinary
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': config('CLOUDINARY_API_KEY'),
-    'API_SECRET': config('CLOUDINARY_API_SECRET'),
-}
+# ---------------- CLOUDINARY CONFIG (FIXED) ----------------
+
+cloudinary.config(
+    cloud_name=config('CLOUDINARY_CLOUD_NAME'),
+    api_key=config('CLOUDINARY_API_KEY'),
+    api_secret=config('CLOUDINARY_API_SECRET'),
+    secure=True
+)
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-MEDIA_URL = '/media/'
+# IMPORTANT: remove dependency on local media in production
+MEDIA_URL = '/media/'   # (can stay, but not used anymore)
 
 # DEFAULT PK
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
