@@ -44,7 +44,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'portfolio.urls'
-
 WSGI_APPLICATION = 'portfolio.wsgi.application'
 
 # DATABASE
@@ -70,9 +69,10 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# 🔥 FIX: use stable WhiteNoise (NO strict manifest)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
-# ---------------- CLOUDINARY FIX (IMPORTANT) ----------------
+# ---------------- CLOUDINARY ----------------
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
@@ -87,15 +87,8 @@ cloudinary.config(
     secure=True
 )
 
-# 🔥 NEW MODERN STORAGE SYSTEM (THIS IS THE FIX)
-STORAGES = {
-    "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+# IMPORTANT (this is enough)
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # DEFAULT PK
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
