@@ -1,0 +1,126 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %} Portfolio{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon - Copy.ico' %}">
+
+    {% block extrahead %}
+    {% endblock %}
+
+    <!-- DARK MODE STYLE -->
+    <style>
+        body.dark {
+            background: #0f172a !important;
+            color: white;
+        }
+
+        body.dark .navbar {
+            background: #020617;
+        }
+
+        body.dark footer {
+            background: #020617;
+        }
+
+        body.dark a {
+            color: #60a5fa;
+        }
+
+        /* KEEP CARDS WHITE */
+        body.dark .project,
+        body.dark #skills-section {
+            background: white !important;
+            color: #111 !important;
+        }
+
+        /* Optional border for clean look */
+        body.dark .project {
+            border: 1px solid #e5e7eb;
+        }
+    </style>
+
+</head>
+
+<body style="margin:0; font-family:Arial; background:#f5f6fa;">
+
+<header class="navbar" style="display:flex; justify-content:space-between; align-items:center; padding:15px;">
+
+  <!-- LEFT -->
+  <div class="nav-left">
+    <a href="/">Home</a>
+    <a href="/about_me/" style="margin-left:15px;">About</a>
+  </div>
+
+  <!-- CENTER -->
+  <div class="nav-center">
+    <h2>💻 Divit Portfolio</h2>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="nav-right">
+    <a href="/contact/">Contact</a>
+
+    <!-- DARK MODE BUTTON -->
+    <button onclick="toggleDarkMode()" style="
+      margin-left:15px;
+      padding:6px 10px;
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
+    ">
+      🌙
+    </button>
+  </div>
+
+</header>
+
+<!-- MAIN -->
+<main style="padding:20px; min-height:80vh;">
+    {% block content %}
+    {% endblock %}
+</main>
+
+<!-- FOOTER -->
+<footer style="
+    text-align:center;
+    padding:15px;
+    background:#111;
+    color:white;
+">
+    © {{ now|default:"2026" }} My Portfolio
+</footer>
+
+{% block extra_js %}
+{% endblock %}
+
+<!-- DARK MODE SCRIPT -->
+<script>
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
+
+  if (document.body.classList.contains("dark")) {
+    localStorage.setItem("theme", "dark");
+  } else {
+    localStorage.setItem("theme", "light");
+  }
+}
+
+// LOAD SAVED MODE
+window.onload = function () {
+  const theme = localStorage.getItem("theme");
+  if (theme === "dark") {
+    document.body.classList.add("dark");
+  }
+};
+</script>
+
+</body>
+</html>

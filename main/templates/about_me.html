@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+About Me
+{% endblock %}
+
+{% block content %}
+
+<div style="max-width:1000px; margin:auto; padding:40px;">
+
+  <!-- TOP SECTION -->
+  <div style="display:flex; align-items:center; gap:40px; flex-wrap:wrap;">
+
+    <!-- IMAGE (LEFT) -->
+    <div style="flex:1; min-width:250px;">
+      <img src="{% static 'images/divit&noni.jpg' %}" 
+           alt="Divit"
+           style="
+             width:100%;
+             max-width:300px;
+             height:300px;
+             object-fit:cover;
+             border-radius:12px;
+             box-shadow:0 10px 25px rgba(0,0,0,0.2);
+           ">
+    </div>
+
+    <!-- TEXT (RIGHT) -->
+    <div style="flex:1; min-width:250px;">
+
+      <h1 style="font-size:36px; margin-bottom:10px;">
+        <span id="typing"></span>
+      </h1>
+
+      <p style="font-size:18px; color:white; line-height:1.7;">
+        I am a passionate developer who loves building websites and apps 💻  
+        I enjoy solving problems and learning new technologies 🚀
+      </p>
+
+      <button onclick="toggleSkills()" style="
+        margin-top:15px;
+        padding:12px 20px;
+        background:#2563eb;
+        color:white;
+        border:none;
+        border-radius:8px;
+        cursor:pointer;
+        font-size:16px;
+      ">
+        Know My Skills 🚀
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- SKILLS -->
+  <div id="skills-section" style="
+    display:none;
+    margin-top:50px;
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+  ">
+
+    <h2 style="margin-bottom:20px;">My Skills</h2>
+
+    <!-- SKILL -->
+    <p>HTML</p>
+    <div style="background:#eee; border-radius:10px;">
+      <div class="skill-bar" data-width="90%">90%</div>
+    </div>
+
+    <p style="margin-top:15px;">CSS</p>
+    <div style="background:#eee; border-radius:10px;">
+      <div class="skill-bar" data-width="85%">85%</div>
+    </div>
+
+    <p style="margin-top:15px;">JavaScript</p>
+    <div style="background:#eee; border-radius:10px;">
+      <div class="skill-bar" data-width="75%">75%</div>
+    </div>
+
+    <p style="margin-top:15px;">Django</p>
+    <div style="background:#eee; border-radius:10px;">
+      <div class="skill-bar" data-width="80%">80%</div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- STYLE -->
+<style>
+.skill-bar {
+  width: 0;
+  background: #2563eb;
+  padding: 6px;
+  color: white;
+  border-radius: 10px;
+  transition: width 1s ease-in-out;
+}
+</style>
+
+<!-- SCRIPTS -->
+<script>
+
+// TOGGLE + ANIMATION
+function toggleSkills() {
+  const section = document.getElementById("skills-section");
+
+  if (section.style.display === "block") {
+    section.style.display = "none";
+  } else {
+    section.style.display = "block";
+
+    // Animate bars
+    const bars = document.querySelectorAll(".skill-bar");
+
+    bars.forEach(bar => {
+      const width = bar.getAttribute("data-width");
+      setTimeout(() => {
+        bar.style.width = width;
+      }, 200);
+    });
+  }
+}
+
+// TYPING EFFECT (FIXED)
+const text = "Hi, I'm Divit 👋";
+let i = 0;
+
+function type() {
+  const el = document.getElementById("typing");
+  if (!el) return;
+
+  if (i < text.length) {
+    el.innerHTML += text.charAt(i);
+    i++;
+    setTimeout(type, 80);
+  }
+}
+
+// Reset before typing (prevents duplicate text on reload)
+document.getElementById("typing").innerHTML = "";
+type();
+
+</script>
+
+{% endblock %}

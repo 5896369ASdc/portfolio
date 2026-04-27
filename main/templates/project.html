@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Project Details
+{% endblock %}
+
+{% block content %}
+
+<div style="max-width:900px; margin:auto; padding:30px;">
+
+  <!-- TITLE -->
+  <h1 style="font-size:34px; margin-bottom:10px;">
+    {{ project.title }}
+  </h1>
+
+  <!-- DESCRIPTION -->
+  <p style="color:#555; font-size:16px; line-height:1.7;">
+    {{ project.description }}
+  </p>
+
+  <!-- PROJECT LINK -->
+  {% if project.link %}
+    <p style="margin-top:12px;">
+      🔗
+      <a href="{{ project.link }}" target="_blank"
+         style="color:#007bff; text-decoration:none; font-weight:500;">
+        Visit Project
+      </a>
+    </p>
+  {% endif %}
+
+  <hr style="margin:30px 0;">
+
+  <!-- IMAGE SLIDER -->
+  <h3 style="margin-bottom:10px;">Images</h3>
+
+  <div style="position:relative; max-width:600px; margin:auto;">
+
+    {% for img in project.image.all %}
+      <img class="slide"
+           src="{{ img.image.url }}"
+           style="
+             width:100%;
+             display:none;
+             border-radius:12px;
+             box-shadow:0 8px 20px rgba(0,0,0,0.2);
+           ">
+    {% empty %}
+      <p>No images available</p>
+    {% endfor %}
+
+    <!-- LEFT BUTTON -->
+    <button onclick="changeSlide(-1)"
+            style="
+              position:absolute;
+              top:50%;
+              left:10px;
+              transform:translateY(-50%);
+              background:white;
+              border:none;
+              padding:12px;
+              border-radius:50%;
+              cursor:pointer;
+              box-shadow:0 2px 8px rgba(0,0,0,0.3);
+              font-size:16px;
+            ">
+      ❮
+    </button>
+
+    <!-- RIGHT BUTTON -->
+    <button onclick="changeSlide(1)"
+            style="
+              position:absolute;
+              top:50%;
+              right:10px;
+              transform:translateY(-50%);
+              background:white;
+              border:none;
+              padding:12px;
+              border-radius:50%;
+              cursor:pointer;
+              box-shadow:0 2px 8px rgba(0,0,0,0.3);
+              font-size:16px;
+            ">
+      ❯
+    </button>
+
+  </div>
+
+  <hr style="margin:30px 0;">
+
+  <!-- TAGS -->
+  <h3>Tags</h3>
+
+  <div style="margin-top:10px;">
+    {% for tag in project.tags.all %}
+      <span style="
+        display:inline-block;
+        background:#28a745;
+        color:white;
+        padding:5px 10px;
+        border-radius:5px;
+        margin-right:5px;
+        font-size:13px;
+      ">
+        {{ tag.name }}
+      </span>
+    {% endfor %}
+  </div>
+
+</div>
+
+<!-- SLIDER SCRIPT -->
+<script>
+let index = 0;
+const slides = document.getElementsByClassName("slide");
+
+function showSlide(i) {
+  if (slides.length === 0) return;
+
+  for (let s of slides) {
+    s.style.display = "none";
+  }
+
+  slides[i].style.display = "block";
+}
+
+function changeSlide(step) {
+  index += step;
+
+  if (index >= slides.length) index = 0;
+  if (index < 0) index = slides.length - 1;
+
+  showSlide(index);
+}
+
+showSlide(index);
+</script>
+
+<!-- NAVIGATION BUTTONS -->
+<div style="display:flex; justify-content:space-between; margin-top:40px;">
+
+  <!-- PREVIOUS PROJECT -->
+  <div>
+    {% if previous_project %}
+      <a href="{% url 'project' previous_project.id %}"
+         style="
+           padding:10px 15px;
+           background:#2563eb;
+           color:white;
+           border-radius:8px;
+           text-decoration:none;
+           display:inline-block;
+         ">
+        ⬅ Previous Project
+      </a>
+    {% endif %}
+  </div>
+
+  <!-- NEXT PROJECT -->
+  <div>
+    {% if next_project %}
+      <a href="{% url 'project' next_project.id %}"
+         style="
+           padding:10px 15px;
+           background:#2563eb;
+           color:white;
+           border-radius:8px;
+           text-decoration:none;
+           display:inline-block;
+         ">
+        Next Project ➡
+      </a>
+    {% endif %}
+  </div>
+
+</div>
+
+<!-- BACK TO HOME -->
+<div style="margin-top:20px; text-align:center;">
+  <a href="/"
+     style="
+       display:inline-block;
+       padding:8px 14px;
+       background:#111;
+       color:white;
+       border-radius:6px;
+       text-decoration:none;
+     ">
+    ← Back to Home
+  </a>
+</div>
+
+{% endblock %}
