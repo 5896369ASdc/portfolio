@@ -7,7 +7,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
 SECRET_KEY = config('SECRET_KEY')
-
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
@@ -46,21 +45,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'portfolio.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
 WSGI_APPLICATION = 'portfolio.wsgi.application'
 
 # DATABASE
@@ -70,14 +54,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-# PASSWORD VALIDATION
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
-]
 
 # LANGUAGE
 LANGUAGE_CODE = 'en-us'
@@ -96,15 +72,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ---------------- CLOUDINARY (FIXED PROPER WAY) ----------------
+# ---------------- CLOUDINARY FIX (IMPORTANT) ----------------
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': config('CLOUDINARY_API_KEY'),
     'API_SECRET': config('CLOUDINARY_API_SECRET'),
 }
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 cloudinary.config(
     cloud_name=config('CLOUDINARY_CLOUD_NAME'),
@@ -113,8 +87,15 @@ cloudinary.config(
     secure=True
 )
 
-# MEDIA (not used in production but safe to keep)
-MEDIA_URL = '/media/'
+# 🔥 NEW MODERN STORAGE SYSTEM (THIS IS THE FIX)
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # DEFAULT PK
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
