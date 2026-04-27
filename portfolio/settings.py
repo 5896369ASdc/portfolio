@@ -1,16 +1,13 @@
 from pathlib import Path
 import os
 
-# BASE DIR
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # SECURITY
 SECRET_KEY = 'django-insecure-5t54y1l2^#3!n^y)rh8ltiv2=dmffly5!g$sfvppwm*6c^$n2a'
 
 DEBUG = False
 ALLOWED_HOSTS = ['*']
-
 
 # APPS
 INSTALLED_APPS = [
@@ -24,7 +21,6 @@ INSTALLED_APPS = [
     'main',
 ]
 
-
 # MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -37,10 +33,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
 # URLS
 ROOT_URLCONF = 'portfolio.urls'
-
 
 # TEMPLATES
 TEMPLATES = [
@@ -58,10 +52,8 @@ TEMPLATES = [
     },
 ]
 
-
 # WSGI
 WSGI_APPLICATION = 'portfolio.wsgi.application'
-
 
 # DATABASE
 DATABASES = {
@@ -71,59 +63,48 @@ DATABASES = {
     }
 }
 
-
 # PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
-# LANGUAGE & TIME
+# LANGUAGE
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-
-# STATIC FILES
+# 🔥 STATIC FILES (FIXED)
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')   # ✅ VERY IMPORTANT
+]
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
-# MEDIA FILES (images)
+# MEDIA
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 
 # DEFAULT PK
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-# JAZZMIN (ADMIN UI)
+# JAZZMIN
 JAZZMIN_SETTINGS = {
     "site_title": "Divit Admin",
     "site_header": "Divit Portfolio",
     "site_brand": "Divit",
     "welcome_sign": "Welcome Divit 🚀",
-
     "topmenu_links": [
         {"name": "Home", "url": "/", "permissions": ["auth.view_user"]},
     ],
 }
 
-
-# EMAIL (for contact form - console for now)
+# EMAIL
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
