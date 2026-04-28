@@ -36,54 +36,58 @@ Project Details
 
   <div style="position:relative; max-width:600px; margin:auto;">
 
-    {% for img in project.image.all %}
-      <img class="slide"
-           src="{{ img.image.url }}"
-           style="
-             width:100%;
-             display:none;
-             border-radius:12px;
-             box-shadow:0 8px 20px rgba(0,0,0,0.2);
-           ">
-    {% empty %}
-      <p>No images available</p>
-    {% endfor %}
+    {% if project.images.all|length > 0 %}
+      
+      {% for img in project.images.all %}
+        <img class="slide"
+             src="{{ img.image.url }}"
+             style="
+               width:100%;
+               display:none;
+               border-radius:12px;
+               box-shadow:0 8px 20px rgba(0,0,0,0.2);
+             ">
+      {% endfor %}
 
-    <!-- LEFT BUTTON -->
-    <button onclick="changeSlide(-1)"
-            style="
-              position:absolute;
-              top:50%;
-              left:10px;
-              transform:translateY(-50%);
-              background:white;
-              border:none;
-              padding:12px;
-              border-radius:50%;
-              cursor:pointer;
-              box-shadow:0 2px 8px rgba(0,0,0,0.3);
-              font-size:16px;
-            ">
-      ❮
-    </button>
+      <!-- LEFT BUTTON -->
+      <button onclick="changeSlide(-1)"
+              style="
+                position:absolute;
+                top:50%;
+                left:10px;
+                transform:translateY(-50%);
+                background:white;
+                border:none;
+                padding:12px;
+                border-radius:50%;
+                cursor:pointer;
+                box-shadow:0 2px 8px rgba(0,0,0,0.3);
+              ">
+        ❮
+      </button>
 
-    <!-- RIGHT BUTTON -->
-    <button onclick="changeSlide(1)"
-            style="
-              position:absolute;
-              top:50%;
-              right:10px;
-              transform:translateY(-50%);
-              background:white;
-              border:none;
-              padding:12px;
-              border-radius:50%;
-              cursor:pointer;
-              box-shadow:0 2px 8px rgba(0,0,0,0.3);
-              font-size:16px;
-            ">
-      ❯
-    </button>
+      <!-- RIGHT BUTTON -->
+      <button onclick="changeSlide(1)"
+              style="
+                position:absolute;
+                top:50%;
+                right:10px;
+                transform:translateY(-50%);
+                background:white;
+                border:none;
+                padding:12px;
+                border-radius:50%;
+                cursor:pointer;
+                box-shadow:0 2px 8px rgba(0,0,0,0.3);
+              ">
+        ❯
+      </button>
+
+    {% else %}
+      <p style="text-align:center; color:gray;">
+        No images uploaded yet 📸
+      </p>
+    {% endif %}
 
   </div>
 
@@ -113,9 +117,9 @@ Project Details
 <!-- SLIDER SCRIPT -->
 <script>
 let index = 0;
-const slides = document.getElementsByClassName("slide");
 
 function showSlide(i) {
+  const slides = document.getElementsByClassName("slide");
   if (slides.length === 0) return;
 
   for (let s of slides) {
@@ -126,6 +130,7 @@ function showSlide(i) {
 }
 
 function changeSlide(step) {
+  const slides = document.getElementsByClassName("slide");
   index += step;
 
   if (index >= slides.length) index = 0;
@@ -134,13 +139,15 @@ function changeSlide(step) {
   showSlide(index);
 }
 
-showSlide(index);
+window.onload = function () {
+  showSlide(index);
+};
 </script>
 
 <!-- NAVIGATION BUTTONS -->
 <div style="display:flex; justify-content:space-between; margin-top:40px;">
 
-  <!-- PREVIOUS PROJECT -->
+  <!-- PREVIOUS -->
   <div>
     {% if previous_project %}
       <a href="{% url 'project' previous_project.id %}"
@@ -150,14 +157,13 @@ showSlide(index);
            color:white;
            border-radius:8px;
            text-decoration:none;
-           display:inline-block;
          ">
         ⬅ Previous Project
       </a>
     {% endif %}
   </div>
 
-  <!-- NEXT PROJECT -->
+  <!-- NEXT -->
   <div>
     {% if next_project %}
       <a href="{% url 'project' next_project.id %}"
@@ -167,7 +173,6 @@ showSlide(index);
            color:white;
            border-radius:8px;
            text-decoration:none;
-           display:inline-block;
          ">
         Next Project ➡
       </a>
@@ -176,7 +181,7 @@ showSlide(index);
 
 </div>
 
-<!-- BACK TO HOME -->
+<!-- BACK -->
 <div style="margin-top:20px; text-align:center;">
   <a href="/"
      style="
