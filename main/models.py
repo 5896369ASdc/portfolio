@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField   # ✅ IMPORTANT
 
 
 class Tag(models.Model):
@@ -24,7 +25,9 @@ class ProjectImage(models.Model):
         related_name="images",
         on_delete=models.CASCADE
     )
-    image = models.ImageField(upload_to="project_images/")
+
+    # 🔥 CHANGE THIS LINE
+    image = CloudinaryField('image')
 
     def __str__(self):
         return f"{self.project.title} Image"
