@@ -5,7 +5,7 @@ from .models import Tag, Project
 
 
 def home(request):
-    project_list = Project.objects.all().order_by('-id')
+    project_list = Project.objects.all().order_by('id')
 
     paginator = Paginator(project_list, 16)
     page_number = request.GET.get('page')
